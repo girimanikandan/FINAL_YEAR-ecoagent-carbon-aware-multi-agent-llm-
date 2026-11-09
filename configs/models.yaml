@@ -1,0 +1,36 @@
+# Model registry. ONE exact model per tier, frozen for all experiments (PDF: "do not change models midway").
+# Default profile = "laptop" (fits a 16 GB machine). To use the PDF's reference sizes (1.5B / 7B / 14B),
+# change the three `name` fields and re-run `scripts/calibrate_energy.py`. Never edit these mid-experiment.
+active_profile: laptop
+provider_default: ollama          # ollama | openai_compatible | mock
+
+profiles:
+  laptop:
+    S: {name: "qwen2.5-coder:1.5b-instruct", params_b: 1.5}
+    M: {name: "qwen2.5-coder:3b-instruct",   params_b: 3.0}
+    L: {name: "qwen2.5-coder:7b-instruct",   params_b: 7.0}
+  pdf_reference:
+    S: {name: "qwen2.5-coder:1.5b-instruct", params_b: 1.5}
+    M: {name: "qwen2.5-coder:7b-instruct",   params_b: 7.0}
+    L: {name: "qwen2.5-coder:14b-instruct",  params_b: 14.0}
+
+# Fields recorded for every tier (PDF "Record for each model").
+common:
+  provider: ollama
+  endpoint: "http://localhost:11434"     # OpenAI-compatible route is {endpoint}/v1/chat/completions
+  api_key_env: null                      # only for hosted OpenAI-compatible providers
+  quantization: "ollama default (as pulled; record `ollama show <model>` output here)"
+  context_window: 4096                   # VERIFY against `ollama show`; recorded in logs
+  temperature: 0.0
+  request_timeout_seconds: 600
+  cost_per_1k_input_usd: 0.0             # local models
+  cost_per_1k_output_usd: 0.0
+
+max_output_tokens: {S: 1024, M: 1536, L: 2048}
+
+# Energy per token (Wh/token, applied to input+output tokens as in the PDF formula).
+# THESE ARE ASSUMED ESTIMATES until scripts/calibrate_energy.py (CodeCarbon) writes configs/energy_measured.yaml,
+# which then takes precedence automatically. Source for the assumed range: Epoch AI (2025) ~0.0001-0.002 Wh/token;
+# tiers are placed by parameter count (assumption, not a measurement).
+energy_per_token_wh_assumed: {S: 0.00010, M: 0.00020, L: 0.00045}
+energy_source_assumed: "assumed_scaling_from_published_range"

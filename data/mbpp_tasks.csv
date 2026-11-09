@@ -1,0 +1,952 @@
+﻿task_id,source,description,prompt_stub,entry_point,test_code,test_setup,n_tests,difficulty,reference_code,prompt_tokens_est
+MBPP_3,mbpp,"Write a python function to identify non-prime numbers.
+Your code should pass this test:
+assert is_not_prime(2) == False",,is_not_prime,"[""assert is_not_prime(2) == False"", ""assert is_not_prime(10) == True"", ""assert is_not_prime(35) == True""]",,3,,"import math
+def is_not_prime(n):
+    result = False
+    for i in range(2,int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            result = True
+    return result",30
+MBPP_19,mbpp,"Write a function to find whether a given array of integers contains any duplicate element.
+Your code should pass this test:
+assert test_duplicate(([1,2,3,4,5]))==False",,test_duplicate,"[""assert test_duplicate(([1,2,3,4,5]))==False"", ""assert test_duplicate(([1,2,3,4, 4]))==True"", ""assert test_duplicate([1,1,2,2,3,3,4,4,5])==True""]",,3,,"def test_duplicate(arraynums):
+    nums_set = set(arraynums)
+    return len(arraynums) != len(nums_set)     ",42
+MBPP_28,mbpp,"Write a python function to find binomial co-efficient.
+Your code should pass this test:
+assert binomial_Coeff(5,2) == 10",,binomial_Coeff,"[""assert binomial_Coeff(5,2) == 10"", ""assert binomial_Coeff(4,3) == 4"", ""assert binomial_Coeff(3,2) == 3""]",,3,,"def binomial_Coeff(n,k):
+    if k > n :
+       return 0
+    if k==0 or k ==n :
+        return 1
+    return binomial_Coeff(n-1,k-1) + binomial_Coeff(n-1,k) ",30
+MBPP_39,mbpp,"Write a function to check if the letters of a given string can be rearranged so that two characters that are adjacent to each other are different.
+Your code should pass this test:
+assert rearange_string(""aab"")==('aba')",,rearange_string,"[""assert rearange_string(\""aab\"")==('aba')"", ""assert rearange_string(\""aabb\"")==('abab')"", ""assert rearange_string(\""abccdd\"")==('cdabcd')""]",,3,,"import heapq
+from collections import Counter
+def rearange_string(S):
+    ctr = Counter(S)
+    heap = [(-value, key) for key, value in ctr.items()]
+    heapq.heapify(heap)
+    if (-heap[0][0]) * 2 > len(S) + 1:
+        return """"
+    ans = []
+    while len(heap) >= 2:
+        nct1, char1 = heapq.heappop(heap)
+        nct2, char2 = heapq.heappop(heap)
+        ans.extend([char1, char2])
+        if nct1 + 1: heapq.heappush(heap, (nct1 + 1, char1))
+        if nct2 + 1: heapq.heappush(heap, (nct2 + 1, char2))
+    return """".join(ans) + (heap[0][1] if heap else """")",54
+MBPP_66,mbpp,"Write a python function to count positive numbers in a list.
+Your code should pass this test:
+assert pos_count([1,-2,3,-4]) == 2",,pos_count,"[""assert pos_count([1,-2,3,-4]) == 2"", ""assert pos_count([3,4,5,-1]) == 3"", ""assert pos_count([1,2,3,4]) == 4""]",,3,,"def pos_count(list):
+  pos_count= 0
+  for num in list:
+    if num >= 0:
+      pos_count += 1
+  return pos_count ",32
+MBPP_71,mbpp,"Write a function to sort a list of elements using comb sort.
+Your code should pass this test:
+assert comb_sort([5, 15, 37, 25, 79]) == [5, 15, 25, 37, 79]",,comb_sort,"[""assert comb_sort([5, 15, 37, 25, 79]) == [5, 15, 25, 37, 79]"", ""assert comb_sort([41, 32, 15, 19, 22]) == [15, 19, 22, 32, 41]"", ""assert comb_sort([99, 15, 13, 47]) == [13, 15, 47, 99]""]",,3,,"def comb_sort(nums):
+    shrink_fact = 1.3
+    gaps = len(nums)
+    swapped = True
+    i = 0
+    while gaps > 1 or swapped:
+        gaps = int(float(gaps) / shrink_fact)
+        swapped = False
+        i = 0
+        while gaps + i < len(nums):
+            if nums[i] > nums[i+gaps]:
+                nums[i], nums[i+gaps] = nums[i+gaps], nums[i]
+                swapped = True
+            i += 1
+    return nums",38
+MBPP_74,mbpp,"Write a function to check whether it follows the sequence given in the patterns array.
+Your code should pass this test:
+assert is_samepatterns([""red"",""green"",""green""], [""a"", ""b"", ""b""])==True ",,is_samepatterns,"[""assert is_samepatterns([\""red\"",\""green\"",\""green\""], [\""a\"", \""b\"", \""b\""])==True "", ""assert is_samepatterns([\""red\"",\""green\"",\""greenn\""], [\""a\"",\""b\"",\""b\""])==False "", ""assert is_samepatterns([\""red\"",\""green\"",\""greenn\""], [\""a\"",\""b\""])==False ""]",,3,,"def is_samepatterns(colors, patterns):
+    if len(colors) != len(patterns):
+        return False
+    sdict = {}
+    pset = set()
+    sset = set()
+    for i in range(len(patterns)):
+        pset.add(patterns[i])
+        sset.add(colors[i])
+        if patterns[i] not in sdict.keys():
+            sdict[patterns[i]] = []
+
+        keys = sdict[patterns[i]]
+        keys.append(colors[i])
+        sdict[patterns[i]] = keys
+
+    if len(pset) != len(sset):
+        return False
+
+    for values in sdict.values():
+
+        for i in range(len(values) - 1):
+            if values[i] != values[i+1]:
+                return False
+
+    return True",48
+MBPP_76,mbpp,"Write a python function to count the number of squares in a rectangle.
+Your code should pass this test:
+assert count_Squares(4,3) == 20",,count_Squares,"[""assert count_Squares(4,3) == 20"", ""assert count_Squares(2,2) == 5"", ""assert count_Squares(1,1) == 1""]",,3,,"def count_Squares(m,n):
+    if(n < m):
+        temp = m
+        m = n
+        n = temp
+    return ((m * (m + 1) * (2 * m + 1) / 6 + (n - m) * m * (m + 1) / 2))",34
+MBPP_82,mbpp,"Write a function to find the volume of a sphere.
+Your code should pass this test:
+assert volume_sphere(10)==4188.790204786391",,volume_sphere,"[""assert volume_sphere(10)==4188.790204786391"", ""assert volume_sphere(25)==65449.84694978735"", ""assert volume_sphere(20)==33510.32163829113""]",,3,,"import math
+def volume_sphere(r):
+  volume=(4/3)*math.pi*r*r*r
+  return volume",31
+MBPP_97,mbpp,"Write a function to find frequency count of list of lists.
+Your code should pass this test:
+assert frequency_lists([[1, 2, 3, 2], [4, 5, 6, 2], [7, 8, 9, 5]])=={1: 1, 2: 3, 3: 1, 4: 1, 5: 2, 6: 1, 7: 1, 8: 1, 9: 1}",,frequency_lists,"[""assert frequency_lists([[1, 2, 3, 2], [4, 5, 6, 2], [7, 8, 9, 5]])=={1: 1, 2: 3, 3: 1, 4: 1, 5: 2, 6: 1, 7: 1, 8: 1, 9: 1}"", ""assert frequency_lists([[1,2,3,4],[5,6,7,8],[9,10,11,12]])=={1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1,10:1,11:1,12:1}"", ""assert frequency_lists([[20,30,40,17],[18,16,14,13],[10,20,30,40]])=={20:2,30:2,40:2,17: 1,18:1, 16: 1,14: 1,13: 1, 10: 1}""]",,3,,"def frequency_lists(list1):
+    list1 = [item for sublist in list1 for item in sublist]
+    dic_data = {}
+    for num in list1:
+        if num in dic_data.keys():
+            dic_data[num] += 1
+        else:
+            key = num
+            value = 1
+            dic_data[key] = value
+    return dic_data
+",54
+MBPP_104,mbpp,"Write a function to sort each sublist of strings in a given list of lists using lambda function.
+Your code should pass this test:
+assert sort_sublists(([""green"", ""orange""], [""black"", ""white""], [""white"", ""black"", ""orange""]))==[['green', 'orange'], ['black', 'white'], ['black', 'orange', 'white']]",,sort_sublists,"[""assert sort_sublists(([\""green\"", \""orange\""], [\""black\"", \""white\""], [\""white\"", \""black\"", \""orange\""]))==[['green', 'orange'], ['black', 'white'], ['black', 'orange', 'white']]"", ""assert sort_sublists(([\"" red \"",\""green\"" ],[\""blue \"",\"" black\""],[\"" orange\"",\""brown\""]))==[[' red ', 'green'], [' black', 'blue '], [' orange', 'brown']]"", ""assert sort_sublists(([\""zilver\"",\""gold\""], [\""magnesium\"",\""aluminium\""], [\""steel\"", \""bronze\""]))==[['gold', 'zilver'],['aluminium', 'magnesium'], ['bronze', 'steel']]""]",,3,,"def sort_sublists(input_list):
+    result = [sorted(x, key = lambda x:x[0]) for x in input_list]
+    return result
+",74
+MBPP_127,mbpp,"Write a function to multiply two integers without using the * operator in python.
+Your code should pass this test:
+assert multiply_int(10,20)==200",,multiply_int,"[""assert multiply_int(10,20)==200"", ""assert multiply_int(5,10)==50"", ""assert multiply_int(4,8)==32""]",,3,,"def multiply_int(x, y):
+    if y < 0:
+        return -multiply_int(x, -y)
+    elif y == 0:
+        return 0
+    elif y == 1:
+        return x
+    else:
+        return x + multiply_int(x, y - 1)",36
+MBPP_129,mbpp,"Write a function to calculate magic square.
+Your code should pass this test:
+assert magic_square_test([[7, 12, 1, 14], [2, 13, 8, 11], [16, 3, 10, 5], [9, 6, 15, 4]])==True",,magic_square_test,"[""assert magic_square_test([[7, 12, 1, 14], [2, 13, 8, 11], [16, 3, 10, 5], [9, 6, 15, 4]])==True"", ""assert magic_square_test([[2, 7, 6], [9, 5, 1], [4, 3, 8]])==True"", ""assert magic_square_test([[2, 7, 6], [9, 5, 1], [4, 3, 7]])==False""]",,3,,"def magic_square_test(my_matrix):
+    iSize = len(my_matrix[0])
+    sum_list = []
+    sum_list.extend([sum (lines) for lines in my_matrix])
+    for col in range(iSize):
+        sum_list.append(sum(row[col] for row in my_matrix))
+    result1 = 0
+    for i in range(0,iSize):
+        result1 +=my_matrix[i][i]
+    sum_list.append(result1)
+    result2 = 0
+    for i in range(iSize-1,-1,-1):
+        result2 +=my_matrix[i][i]
+    sum_list.append(result2)
+    if len(set(sum_list))>1:
+        return False
+    return True",43
+MBPP_143,mbpp,"Write a function to find number of lists present in the given tuple.
+Your code should pass this test:
+assert find_lists(([1, 2, 3, 4], [5, 6, 7, 8])) == 2",,find_lists,"[""assert find_lists(([1, 2, 3, 4], [5, 6, 7, 8])) == 2"", ""assert find_lists(([1, 2], [3, 4], [5, 6]))  == 3"", ""assert find_lists(([9, 8, 7, 6, 5, 4, 3, 2, 1])) == 1""]",,3,,"def find_lists(Input):
+	if isinstance(Input, list):
+		return 1
+	else:
+		return len(Input) ",38
+MBPP_144,mbpp,"Write a python function to find the sum of absolute differences in all pairs of the given array.
+Your code should pass this test:
+assert sum_Pairs([1,8,9,15,16],5) == 74",,sum_Pairs,"[""assert sum_Pairs([1,8,9,15,16],5) == 74"", ""assert sum_Pairs([1,2,3,4],4) == 10"", ""assert sum_Pairs([1,2,3,4,5,7,9,11,14],9) == 188""]",,3,,"def sum_Pairs(arr,n):
+    sum = 0
+    for i in range(n - 1,-1,-1):
+        sum += i*arr[i] - (n-1-i) * arr[i]
+    return sum",42
+MBPP_154,mbpp,"Write a function to extract every specified element from a given two dimensional list.
+Your code should pass this test:
+assert specified_element([[1, 2, 3, 2], [4, 5, 6, 2], [7, 1, 9, 5]],0)==[1, 4, 7]",,specified_element,"[""assert specified_element([[1, 2, 3, 2], [4, 5, 6, 2], [7, 1, 9, 5]],0)==[1, 4, 7]"", ""assert specified_element([[1, 2, 3, 2], [4, 5, 6, 2], [7, 1, 9, 5]],2)==[3, 6, 9]"", ""assert specified_element([[1, 2, 3, 2], [4, 5, 6, 2], [7, 1, 9, 5]],3)==[2,2,5]""]",,3,,"def specified_element(nums, N):
+    result = [i[N] for i in nums]
+    return result",50
+MBPP_158,mbpp,"Write a python function to find k number of operations required to make all elements equal.
+Your code should pass this test:
+assert min_Ops([2,2,2,2],4,3) == 0",,min_Ops,"[""assert min_Ops([2,2,2,2],4,3) == 0"", ""assert min_Ops([4,2,6,8],4,3) == -1"", ""assert min_Ops([21,33,9,45,63],5,6) == 24""]",,3,,"def min_Ops(arr,n,k):
+    max1 = max(arr)
+    res = 0
+    for i in range(0,n):
+        if ((max1 - arr[i]) % k != 0):
+            return -1
+        else:
+            res += (max1 - arr[i]) / k
+    return int(res) ",40
+MBPP_162,mbpp,"Write a function to calculate the sum of the positive integers of n+(n-2)+(n-4)... (until n-x =< 0).
+Your code should pass this test:
+assert sum_series(6)==12",,sum_series,"[""assert sum_series(6)==12"", ""assert sum_series(10)==30"", ""assert sum_series(9)==25""]",,3,,"def sum_series(n):
+  if n < 1:
+    return 0
+  else:
+    return n + sum_series(n - 2)",40
+MBPP_164,mbpp,"Write a python function to check whether the sum of divisors are same or not.
+Your code should pass this test:
+assert areEquivalent(36,57) == False",,areEquivalent,"[""assert areEquivalent(36,57) == False"", ""assert areEquivalent(2,4) == False"", ""assert areEquivalent(23,47) == True""]",,3,,"import math
+def divSum(n):
+    sum = 1;
+    i = 2;
+    while(i * i <= n):
+        if (n % i == 0):
+            sum = (sum + i +math.floor(n / i));
+        i += 1;
+    return sum;
+def areEquivalent(num1,num2):
+    return divSum(num1) == divSum(num2); ",37
+MBPP_176,mbpp,"Write a function to find the perimeter of a triangle.
+Your code should pass this test:
+assert perimeter_triangle(10,20,30)==60",,perimeter_triangle,"[""assert perimeter_triangle(10,20,30)==60"", ""assert perimeter_triangle(3,4,5)==12"", ""assert perimeter_triangle(25,35,45)==105""]",,3,,"def perimeter_triangle(a,b,c):
+  perimeter=a+b+c
+  return perimeter",32
+MBPP_179,mbpp,"Write a function to find if the given number is a keith number or not.
+Your code should pass this test:
+assert is_num_keith(14) == True",,is_num_keith,"[""assert is_num_keith(14) == True"", ""assert is_num_keith(12) == False"", ""assert is_num_keith(197) == True""]",,3,,"def is_num_keith(x):
+	terms = []
+	temp = x
+	n = 0
+	while (temp > 0):
+		terms.append(temp % 10)
+		temp = int(temp / 10)
+		n+=1
+	terms.reverse()
+	next_term = 0
+	i = n
+	while (next_term < x):
+		next_term = 0
+		for j in range(1,n+1):
+			next_term += terms[i - j]
+		terms.append(next_term)
+		i+=1
+	return (next_term == x) ",34
+MBPP_187,mbpp,"Write a function to find the longest common subsequence for the given two sequences.
+Your code should pass this test:
+assert longest_common_subsequence(""AGGTAB"" , ""GXTXAYB"", 6, 7) == 4",,longest_common_subsequence,"[""assert longest_common_subsequence(\""AGGTAB\"" , \""GXTXAYB\"", 6, 7) == 4"", ""assert longest_common_subsequence(\""ABCDGH\"" , \""AEDFHR\"", 6, 6) == 3"", ""assert longest_common_subsequence(\""AXYT\"" , \""AYZX\"", 4, 4) == 2""]",,3,,"def longest_common_subsequence(X, Y, m, n):
+    if m == 0 or n == 0:
+       return 0
+    elif X[m-1] == Y[n-1]:
+       return 1 + longest_common_subsequence(X, Y, m-1, n-1)
+    else:
+       return max(longest_common_subsequence(X, Y, m, n-1), longest_common_subsequence(X, Y, m-1, n))",46
+MBPP_194,mbpp,"Write a python function to convert octal number to decimal number.
+Your code should pass this test:
+assert octal_To_Decimal(25) == 21",,octal_To_Decimal,"[""assert octal_To_Decimal(25) == 21"", ""assert octal_To_Decimal(30) == 24"", ""assert octal_To_Decimal(40) == 32""]",,3,,"def octal_To_Decimal(n):
+    num = n;
+    dec_value = 0;
+    base = 1;
+    temp = num;
+    while (temp):
+        last_digit = temp % 10;
+        temp = int(temp / 10);
+        dec_value += last_digit*base;
+        base = base * 8;
+    return dec_value; ",33
+MBPP_211,mbpp,"Write a python function to count numbers whose oth and nth bits are set.
+Your code should pass this test:
+assert count_Num(2) == 1",,count_Num,"[""assert count_Num(2) == 1"", ""assert count_Num(3) == 2"", ""assert count_Num(1) == 1""]",,3,,"def count_Num(n):
+    if (n == 1):
+        return 1
+    count = pow(2,n - 2)
+    return count ",32
+MBPP_214,mbpp,"Write a function to convert radians to degrees.
+Your code should pass this test:
+assert degree_radian(90)==5156.620156177409",,degree_radian,"[""assert degree_radian(90)==5156.620156177409"", ""assert degree_radian(60)==3437.746770784939"", ""assert degree_radian(120)==6875.493541569878""]",,3,,"import math
+def degree_radian(radian):
+ degree = radian*(180/math.pi)
+ return degree",31
+MBPP_215,mbpp,"Write a function to decode a run-length encoded given list.
+Your code should pass this test:
+assert decode_list([[2, 1], 2, 3, [2, 4], 5,1])==[1,1,2,3,4,4,5,1]",,decode_list,"[""assert decode_list([[2, 1], 2, 3, [2, 4], 5,1])==[1,1,2,3,4,4,5,1]"", ""assert decode_list(['a', 'u', 't', 'o', 'm', 'a', 't', 'i', 'c', 'a', [2, 'l'], 'y'])==['a', 'u', 't', 'o', 'm', 'a', 't', 'i', 'c', 'a', 'l', 'l', 'y']"", ""assert decode_list(['p', 'y', 't', 'h', 'o', 'n'])==['p', 'y', 't', 'h', 'o', 'n']""]",,3,,"def decode_list(alist):
+    def aux(g):
+        if isinstance(g, list):
+            return [(g[1], range(g[0]))]
+        else:
+            return [(g, [0])]
+    return [x for g in alist for x, R in aux(g) for i in R]",40
+MBPP_225,mbpp,"Write a python function to find the minimum element in a sorted and rotated array.
+Your code should pass this test:
+assert find_Min([1,2,3,4,5],0,4) == 1",,find_Min,"[""assert find_Min([1,2,3,4,5],0,4) == 1"", ""assert find_Min([4,6,8],0,2) == 4"", ""assert find_Min([2,3,5,7,9],0,4) == 2""]",,3,,"def find_Min(arr,low,high):
+    while (low < high):
+        mid = low + (high - low) // 2;
+        if (arr[mid] == arr[high]):
+            high -= 1;
+        elif (arr[mid] > arr[high]):
+            low = mid + 1;
+        else:
+            high = mid;
+    return arr[high]; ",38
+MBPP_226,mbpp,"Write a python function to remove the characters which have odd index values of a given string.
+Your code should pass this test:
+assert odd_values_string('abcdef') == 'ace'",,odd_values_string,"[""assert odd_values_string('abcdef') == 'ace'"", ""assert odd_values_string('python') == 'pto'"", ""assert odd_values_string('data') == 'dt'""]",,3,,"def odd_values_string(str):
+  result = """"
+  for i in range(len(str)):
+    if i % 2 == 0:
+      result = result + str[i]
+  return result",43
+MBPP_240,mbpp,"Write a function to replace the last element of the list with another list.
+Your code should pass this test:
+assert replace_list([1, 3, 5, 7, 9, 10],[2, 4, 6, 8])==[1, 3, 5, 7, 9, 2, 4, 6, 8]",,replace_list,"[""assert replace_list([1, 3, 5, 7, 9, 10],[2, 4, 6, 8])==[1, 3, 5, 7, 9, 2, 4, 6, 8]"", ""assert replace_list([1,2,3,4,5],[5,6,7,8])==[1,2,3,4,5,6,7,8]"", ""assert replace_list([\""red\"",\""blue\"",\""green\""],[\""yellow\""])==[\""red\"",\""blue\"",\""yellow\""]""]",,3,,"def replace_list(list1,list2):
+ list1[-1:] = list2
+ replace_list=list1
+ return replace_list
+",48
+MBPP_246,mbpp,"Write a function for computing square roots using the babylonian method.
+Your code should pass this test:
+assert babylonian_squareroot(10)==3.162277660168379",,babylonian_squareroot,"[""assert babylonian_squareroot(10)==3.162277660168379"", ""assert babylonian_squareroot(2)==1.414213562373095"", ""assert babylonian_squareroot(9)==3.0""]",,3,,"def babylonian_squareroot(number):
+    if(number == 0):
+        return 0;
+    g = number/2.0;
+    g2 = g + 1;
+    while(g != g2):
+        n = number/ g;
+        g2 = g;
+        g = (g + n)/2;
+    return g;",39
+MBPP_257,mbpp,"Write a function to swap two numbers.
+Your code should pass this test:
+assert swap_numbers(10,20)==(20,10)",,swap_numbers,"[""assert swap_numbers(10,20)==(20,10)"", ""assert swap_numbers(15,17)==(17,15)"", ""assert swap_numbers(100,200)==(200,100)""]",,3,,"def swap_numbers(a,b):
+ temp = a
+ a = b
+ b = temp
+ return (a,b)",26
+MBPP_261,mbpp,"Write a function to perform mathematical division operation across the given tuples.
+Your code should pass this test:
+assert division_elements((10, 4, 6, 9),(5, 2, 3, 3)) == (2, 2, 2, 3)",,division_elements,"[""assert division_elements((10, 4, 6, 9),(5, 2, 3, 3)) == (2, 2, 2, 3)"", ""assert division_elements((12, 6, 8, 16),(6, 3, 4, 4)) == (2, 2, 2, 4)"", ""assert division_elements((20, 14, 36, 18),(5, 7, 6, 9)) == (4, 2, 6, 2)""]",,3,,"def division_elements(test_tup1, test_tup2):
+  res = tuple(ele1 // ele2 for ele1, ele2 in zip(test_tup1, test_tup2))
+  return (res) ",46
+MBPP_265,mbpp,"Write a function to split a list for every nth element.
+Your code should pass this test:
+assert list_split(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'],3)==[['a', 'd', 'g', 'j', 'm'], ['b', 'e', 'h', 'k', 'n'], ['c', 'f', 'i', 'l']] ",,list_split,"[""assert list_split(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'],3)==[['a', 'd', 'g', 'j', 'm'], ['b', 'e', 'h', 'k', 'n'], ['c', 'f', 'i', 'l']] "", ""assert list_split([1,2,3,4,5,6,7,8,9,10,11,12,13,14],3)==[[1,4,7,10,13], [2,5,8,11,14], [3,6,9,12]] "", ""assert list_split(['python','java','C','C++','DBMS','SQL'],2)==[['python', 'C', 'DBMS'], ['java', 'C++', 'SQL']] ""]",,3,,"def list_split(S, step):
+    return [S[i::step] for i in range(step)]",65
+MBPP_279,mbpp,"Write a function to find the nth decagonal number.
+Your code should pass this test:
+assert is_num_decagonal(3) == 27",,is_num_decagonal,"[""assert is_num_decagonal(3) == 27"", ""assert is_num_decagonal(7) == 175"", ""assert is_num_decagonal(10) == 370""]",,3,,"def is_num_decagonal(n):
+	return 4 * n * n - 3 * n ",29
+MBPP_323,mbpp,"Write a function to re-arrange the given array in alternating positive and negative items.
+Your code should pass this test:
+assert re_arrange([-5, -2, 5, 2, 4,	7, 1, 8, 0, -8], 10) == [-5, 5, -2, 2, -8, 4, 7, 1, 8, 0]",,re_arrange,"[""assert re_arrange([-5, -2, 5, 2, 4,\t7, 1, 8, 0, -8], 10) == [-5, 5, -2, 2, -8, 4, 7, 1, 8, 0]"", ""assert re_arrange([1, 2, 3, -4, -1, 4], 6) == [-4, 1, -1, 2, 3, 4]"", ""assert re_arrange([4, 7, 9, 77, -4, 5, -3, -9], 8) == [-4, 4, -3, 7, -9, 9, 77, 5]""]",,3,,"def right_rotate(arr, n, out_of_place, cur):
+	temp = arr[cur]
+	for i in range(cur, out_of_place, -1):
+		arr[i] = arr[i - 1]
+	arr[out_of_place] = temp
+	return arr
+def re_arrange(arr, n):
+	out_of_place = -1
+	for index in range(n):
+		if (out_of_place >= 0):
+			if ((arr[index] >= 0 and arr[out_of_place] < 0) or
+			(arr[index] < 0 and arr[out_of_place] >= 0)):
+				arr = right_rotate(arr, n, out_of_place, index)
+				if (index-out_of_place > 2):
+					out_of_place += 2
+				else:
+					out_of_place = - 1
+		if (out_of_place == -1):
+			if ((arr[index] >= 0 and index % 2 == 0) or
+			 (arr[index] < 0 and index % 2 == 1)):
+				out_of_place = index
+	return arr",54
+MBPP_329,mbpp,"Write a python function to count negative numbers in a list.
+Your code should pass this test:
+assert neg_count([-1,-2,3,-4,-5]) == 4",,neg_count,"[""assert neg_count([-1,-2,3,-4,-5]) == 4"", ""assert neg_count([1,2,3]) == 0"", ""assert neg_count([1,2,-3,-10,20]) == 2""]",,3,,"def neg_count(list):
+  neg_count= 0
+  for num in list:
+    if num <= 0:
+      neg_count += 1
+  return neg_count ",33
+MBPP_338,mbpp,"Write a python function to count the number of substrings with same first and last characters.
+Your code should pass this test:
+assert count_Substring_With_Equal_Ends('aba') == 4",,count_Substring_With_Equal_Ends,"[""assert count_Substring_With_Equal_Ends('aba') == 4"", ""assert count_Substring_With_Equal_Ends('abcab') == 7"", ""assert count_Substring_With_Equal_Ends('abc') == 3""]",,3,,"def check_Equality(s):
+    return (ord(s[0]) == ord(s[len(s) - 1]));
+def count_Substring_With_Equal_Ends(s):
+    result = 0;
+    n = len(s);
+    for i in range(n):
+        for j in range(1,n-i+1):
+            if (check_Equality(s[i:i+j])):
+                result+=1;
+    return result; ",44
+MBPP_364,mbpp,"Write a function to find the number of flips required to make the given binary string a sequence of alternate characters.
+Your code should pass this test:
+assert min_flip_to_make_string_alternate(""0001010111"") == 2",,min_flip_to_make_string_alternate,"[""assert min_flip_to_make_string_alternate(\""0001010111\"") == 2"", ""assert min_flip_to_make_string_alternate(\""001\"") == 1"", ""assert min_flip_to_make_string_alternate(\""010111011\"") == 2 ""]",,3,,"def make_flip(ch):
+	return '1' if (ch == '0') else '0'
+def get_flip_with_starting_charcter(str, expected):
+	flip_count = 0
+	for i in range(len( str)):
+		if (str[i] != expected):
+			flip_count += 1
+		expected = make_flip(expected)
+	return flip_count
+def min_flip_to_make_string_alternate(str):
+	return min(get_flip_with_starting_charcter(str, '0'),get_flip_with_starting_charcter(str, '1')) ",54
+MBPP_370,mbpp,"Write a function to sort a tuple by its float element.
+Your code should pass this test:
+assert float_sort([('item1', '12.20'), ('item2', '15.10'), ('item3', '24.5')])==[('item3', '24.5'), ('item2', '15.10'), ('item1', '12.20')] ",,float_sort,"[""assert float_sort([('item1', '12.20'), ('item2', '15.10'), ('item3', '24.5')])==[('item3', '24.5'), ('item2', '15.10'), ('item1', '12.20')] "", ""assert float_sort([('item1', '15'), ('item2', '10'), ('item3', '20')])==[('item3', '20'), ('item1', '15'), ('item2', '10')] "", ""assert float_sort([('item1', '5'), ('item2', '10'), ('item3', '14')])==[('item3', '14'), ('item2', '10'), ('item1', '5')] ""]",,3,,"def float_sort(price):
+  float_sort=sorted(price, key=lambda x: float(x[1]), reverse=True)
+  return float_sort",57
+MBPP_382,mbpp,"Write a function to find the number of rotations in a circularly sorted array.
+Your code should pass this test:
+assert find_rotation_count([8, 9, 10, 1, 2, 3, 4, 5, 6, 7]) == 3",,find_rotation_count,"[""assert find_rotation_count([8, 9, 10, 1, 2, 3, 4, 5, 6, 7]) == 3"", ""assert find_rotation_count([8, 9, 10,2, 5, 6]) == 3"", ""assert find_rotation_count([2, 5, 6, 8, 9, 10]) == 0""]",,3,,"def find_rotation_count(A):
+    (left, right) = (0, len(A) - 1)
+    while left <= right:
+        if A[left] <= A[right]:
+            return left
+        mid = (left + right) // 2
+        next = (mid + 1) % len(A)
+        prev = (mid - 1 + len(A)) % len(A)
+        if A[mid] <= A[next] and A[mid] <= A[prev]:
+            return mid
+        elif A[mid] <= A[right]:
+            right = mid - 1
+        elif A[mid] >= A[left]:
+            left = mid + 1
+    return -1",44
+MBPP_387,mbpp,"Write a python function to check whether the hexadecimal number is even or odd.
+Your code should pass this test:
+assert even_or_odd(""AB3454D"") ==""Odd""",,even_or_odd,"[""assert even_or_odd(\""AB3454D\"") ==\""Odd\"""", ""assert even_or_odd(\""ABC\"") == \""Even\"""", ""assert even_or_odd(\""AAD\"") == \""Odd\""""]",,3,,"def even_or_odd(N):
+    l = len(N)
+    if (N[l-1] =='0'or N[l-1] =='2'or
+        N[l-1] =='4'or N[l-1] =='6'or
+        N[l-1] =='8'or N[l-1] =='A'or
+        N[l-1] =='C'or N[l-1] =='E'):
+        return (""Even"")
+    else:
+        return (""Odd"") ",38
+MBPP_393,mbpp,"Write a function to find the list with maximum length using lambda function.
+Your code should pass this test:
+assert max_length_list([[0], [1, 3], [5, 7], [9, 11], [13, 15, 17]])==(3, [13, 15, 17])",,max_length_list,"[""assert max_length_list([[0], [1, 3], [5, 7], [9, 11], [13, 15, 17]])==(3, [13, 15, 17])"", ""assert max_length_list([[1,2,3,4,5],[1,2,3,4],[1,2,3],[1,2],[1]])==(5,[1,2,3,4,5])"", ""assert max_length_list([[3,4,5],[6,7,8,9],[10,11,12]])==(4,[6,7,8,9])""]",,3,,"def max_length_list(input_list):
+    max_length = max(len(x) for x in input_list )
+    max_list = max(input_list, key = lambda i: len(i))
+    return(max_length, max_list)",49
+MBPP_409,mbpp,"Write a function to find the minimum product from the pairs of tuples within a given list.
+Your code should pass this test:
+assert min_product_tuple([(2, 7), (2, 6), (1, 8), (4, 9)] )==8",,min_product_tuple,"[""assert min_product_tuple([(2, 7), (2, 6), (1, 8), (4, 9)] )==8"", ""assert min_product_tuple([(10,20), (15,2), (5,10)] )==30"", ""assert min_product_tuple([(11,44), (10,15), (20,5), (12, 9)] )==100""]",,3,,"def min_product_tuple(list1):
+    result_min = min([abs(x * y) for x, y in list1] )
+    return result_min",46
+MBPP_417,mbpp,"Write a function to find common first element in given list of tuple.
+Your code should pass this test:
+assert group_tuples([('x', 'y'), ('x', 'z'), ('w', 't')]) == [('x', 'y', 'z'), ('w', 't')]",,group_tuples,"[""assert group_tuples([('x', 'y'), ('x', 'z'), ('w', 't')]) == [('x', 'y', 'z'), ('w', 't')]"", ""assert group_tuples([('a', 'b'), ('a', 'c'), ('d', 'e')]) == [('a', 'b', 'c'), ('d', 'e')]"", ""assert group_tuples([('f', 'g'), ('f', 'g'), ('h', 'i')]) == [('f', 'g', 'g'), ('h', 'i')]""]",,3,,"def group_tuples(Input):
+	out = {}
+	for elem in Input:
+		try:
+			out[elem[0]].extend(elem[1:])
+		except KeyError:
+			out[elem[0]] = list(elem)
+	return [tuple(values) for values in out.values()] ",48
+MBPP_432,mbpp,"Write a function to find the median of a trapezium.
+Your code should pass this test:
+assert median_trapezium(15,25,35)==20",,median_trapezium,"[""assert median_trapezium(15,25,35)==20"", ""assert median_trapezium(10,20,30)==15"", ""assert median_trapezium(6,9,4)==7.5""]",,3,,"def median_trapezium(base1,base2,height):
+ median = 0.5 * (base1+ base2)
+ return median",30
+MBPP_434,mbpp,"Write a function that matches a string that has an a followed by one or more b's.
+Your code should pass this test:
+assert text_match_one(""ac"")==('Not matched!')",,text_match_one,"[""assert text_match_one(\""ac\"")==('Not matched!')"", ""assert text_match_one(\""dc\"")==('Not matched!')"", ""assert text_match_one(\""abba\"")==('Found a match!')""]",,3,,"import re
+def text_match_one(text):
+        patterns = 'ab+?'
+        if re.search(patterns,  text):
+                return 'Found a match!'
+        else:
+                return('Not matched!')
+",40
+MBPP_444,mbpp,"Write a function to trim each tuple by k in the given tuple list.
+Your code should pass this test:
+assert trim_tuple([(5, 3, 2, 1, 4), (3, 4, 9, 2, 1),(9, 1, 2, 3, 5), (4, 8, 2, 1, 7)], 2) == '[(2,), (9,), (2,), (2,)]'",,trim_tuple,"[""assert trim_tuple([(5, 3, 2, 1, 4), (3, 4, 9, 2, 1),(9, 1, 2, 3, 5), (4, 8, 2, 1, 7)], 2) == '[(2,), (9,), (2,), (2,)]'"", ""assert trim_tuple([(5, 3, 2, 1, 4), (3, 4, 9, 2, 1), (9, 1, 2, 3, 5), (4, 8, 2, 1, 7)], 1) == '[(3, 2, 1), (4, 9, 2), (1, 2, 3), (8, 2, 1)]'"", ""assert trim_tuple([(7, 8, 4, 9), (11, 8, 12, 4),(4, 1, 7, 8), (3, 6, 9, 7)], 1) == '[(8, 4), (8, 12), (1, 7), (6, 9)]'""]",,3,,"def trim_tuple(test_list, K):
+  res = []
+  for ele in test_list:
+    N = len(ele)
+    res.append(tuple(list(ele)[K: N - K]))
+  return (str(res)) ",54
+MBPP_447,mbpp,"Write a function to find cubes of individual elements in a list using lambda function.
+Your code should pass this test:
+assert cube_nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])==[1, 8, 27, 64, 125, 216, 343, 512, 729, 1000]",,cube_nums,"[""assert cube_nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])==[1, 8, 27, 64, 125, 216, 343, 512, 729, 1000]"", ""assert cube_nums([10,20,30])==([1000, 8000, 27000])"", ""assert cube_nums([12,15])==([1728, 3375])""]",,3,,"def cube_nums(nums):
+ cube_nums = list(map(lambda x: x ** 3, nums))
+ return cube_nums",54
+MBPP_463,mbpp,"Write a function to find the maximum product subarray of the given array.
+Your code should pass this test:
+assert max_subarray_product([1, -2, -3, 0, 7, -8, -2]) == 112",,max_subarray_product,"[""assert max_subarray_product([1, -2, -3, 0, 7, -8, -2]) == 112"", ""assert max_subarray_product([6, -3, -10, 0, 2]) == 180 "", ""assert max_subarray_product([-2, -40, 0, -2, -3]) == 80""]",,3,,"def max_subarray_product(arr):
+	n = len(arr)
+	max_ending_here = 1
+	min_ending_here = 1
+	max_so_far = 0
+	flag = 0
+	for i in range(0, n):
+		if arr[i] > 0:
+			max_ending_here = max_ending_here * arr[i]
+			min_ending_here = min (min_ending_here * arr[i], 1)
+			flag = 1
+		elif arr[i] == 0:
+			max_ending_here = 1
+			min_ending_here = 1
+		else:
+			temp = max_ending_here
+			max_ending_here = max (min_ending_here * arr[i], 1)
+			min_ending_here = temp * arr[i]
+		if (max_so_far < max_ending_here):
+			max_so_far = max_ending_here
+	if flag == 0 and max_so_far == 0:
+		return 0
+	return max_so_far",42
+MBPP_466,mbpp,"Write a function to find the peak element in the given array.
+Your code should pass this test:
+assert find_peak([1, 3, 20, 4, 1, 0], 6) == 2",,find_peak,"[""assert find_peak([1, 3, 20, 4, 1, 0], 6) == 2"", ""assert find_peak([2, 3, 4, 5, 6], 5) == 4"", ""assert find_peak([8, 9, 11, 12, 14, 15], 6) == 5 ""]",,3,,"def find_peak_util(arr, low, high, n):
+	mid = low + (high - low)/2
+	mid = int(mid)
+	if ((mid == 0 or arr[mid - 1] <= arr[mid]) and
+		(mid == n - 1 or arr[mid + 1] <= arr[mid])):
+		return mid
+	elif (mid > 0 and arr[mid - 1] > arr[mid]):
+		return find_peak_util(arr, low, (mid - 1), n)
+	else:
+		return find_peak_util(arr, (mid + 1), high, n)
+def find_peak(arr, n):
+	return find_peak_util(arr, 0, n - 1, n) ",35
+MBPP_485,mbpp,"Write a function to find the largest palindromic number in the given array.
+Your code should pass this test:
+assert largest_palindrome([1, 232, 54545, 999991], 4) == 54545",,largest_palindrome,"[""assert largest_palindrome([1, 232, 54545, 999991], 4) == 54545"", ""assert largest_palindrome([1, 2, 3, 4, 5, 50], 6) == 5"", ""assert largest_palindrome([1, 3, 7, 9, 45], 5)  == 9""]",,3,,"def is_palindrome(n) :
+	divisor = 1
+	while (n / divisor >= 10) :
+		divisor *= 10
+	while (n != 0) :
+		leading = n // divisor
+		trailing = n % 10
+		if (leading != trailing) :
+			return False
+		n = (n % divisor) // 10
+		divisor = divisor // 100
+	return True
+def largest_palindrome(A, n) :
+	A.sort()
+	for i in range(n - 1, -1, -1) :
+		if (is_palindrome(A[i])) :
+			return A[i]
+	return -1",43
+MBPP_503,mbpp,"Write a function to add consecutive numbers of a given list.
+Your code should pass this test:
+assert add_consecutive_nums([1, 1, 3, 4, 4, 5, 6, 7])==[2, 4, 7, 8, 9, 11, 13]",,add_consecutive_nums,"[""assert add_consecutive_nums([1, 1, 3, 4, 4, 5, 6, 7])==[2, 4, 7, 8, 9, 11, 13]"", ""assert add_consecutive_nums([4, 5, 8, 9, 6, 10])==[9, 13, 17, 15, 16]"", ""assert add_consecutive_nums([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])==[3, 5, 7, 9, 11, 13, 15, 17, 19]""]",,3,,"def add_consecutive_nums(nums):
+    result = [b+a for a, b in zip(nums[:-1], nums[1:])]
+    return result",43
+MBPP_525,mbpp,"Write a python function to check whether two given lines are parallel or not.
+Your code should pass this test:
+assert parallel_lines([2,3,4], [2,3,8]) == True",,parallel_lines,"[""assert parallel_lines([2,3,4], [2,3,8]) == True"", ""assert parallel_lines([2,3,4], [4,-3,8]) == False"", ""assert parallel_lines([3,3],[5,5]) == True""]",,3,,"def parallel_lines(line1, line2):
+  return line1[0]/line1[1] == line2[0]/line2[1]",40
+MBPP_533,mbpp,"Write a function to remove particular data type elements from the given tuple.
+Your code should pass this test:
+assert remove_datatype((4, 5, 4, 7.7, 1.2), int) == [7.7, 1.2]",,remove_datatype,"[""assert remove_datatype((4, 5, 4, 7.7, 1.2), int) == [7.7, 1.2]"", ""assert remove_datatype((7, 8, 9, \""SR\""), str) == [7, 8, 9]"", ""assert remove_datatype((7, 1.1, 2, 2.2), float) == [7, 2]""]",,3,,"def remove_datatype(test_tuple, data_type):
+  res = []
+  for ele in test_tuple:
+    if not isinstance(ele, data_type):
+      res.append(ele)
+  return (res) ",44
+MBPP_534,mbpp,"Write a function to search a literals string in a string and also find the location within the original string where the pattern occurs.
+Your code should pass this test:
+assert search_literal('python','python programming language')==(0,6)",,search_literal,"[""assert search_literal('python','python programming language')==(0,6)"", ""assert search_literal('programming','python programming language')==(7,18)"", ""assert search_literal('language','python programming language')==(19,27)""]",,3,,"import re
+def search_literal(pattern,text):
+ match = re.search(pattern, text)
+ s = match.start()
+ e = match.end()
+ return (s, e)",60
+MBPP_548,mbpp,"Write a function to find the length of the longest increasing subsequence of the given sequence.
+Your code should pass this test:
+assert longest_increasing_subsequence([10, 22, 9, 33, 21, 50, 41, 60]) == 5",,longest_increasing_subsequence,"[""assert longest_increasing_subsequence([10, 22, 9, 33, 21, 50, 41, 60]) == 5"", ""assert longest_increasing_subsequence([3, 10, 2, 1, 20]) == 3"", ""assert longest_increasing_subsequence([50, 3, 10, 7, 40, 80]) == 4 ""]",,3,,"def longest_increasing_subsequence(arr):
+	n = len(arr)
+	longest_increasing_subsequence = [1]*n
+	for i in range (1 , n):
+		for j in range(0 , i):
+			if arr[i] > arr[j] and longest_increasing_subsequence[i]< longest_increasing_subsequence[j] + 1 :
+				longest_increasing_subsequence[i] = longest_increasing_subsequence[j]+1
+	maximum = 0
+	for i in range(n):
+		maximum = max(maximum , longest_increasing_subsequence[i])
+	return maximum",51
+MBPP_550,mbpp,"Write a python function to find the maximum element in a sorted and rotated array.
+Your code should pass this test:
+assert find_Max([2,3,5,6,9],0,4) == 9",,find_Max,"[""assert find_Max([2,3,5,6,9],0,4) == 9"", ""assert find_Max([3,4,5,2,1],0,4) == 5"", ""assert find_Max([1,2,3],0,2) == 3""]",,3,,"def find_Max(arr,low,high):
+    if (high < low):
+        return arr[0]
+    if (high == low):
+        return arr[low]
+    mid = low + (high - low) // 2
+    if (mid < high and arr[mid + 1] < arr[mid]):
+        return arr[mid]
+    if (mid > low and arr[mid] < arr[mid - 1]):
+        return arr[mid - 1]
+    if (arr[low] > arr[mid]):
+        return find_Max(arr,low,mid - 1)
+    else:
+        return find_Max(arr,mid + 1,high) ",38
+MBPP_567,mbpp,"Write a function to check whether a specified list is sorted or not.
+Your code should pass this test:
+assert issort_list([1,2,4,6,8,10,12,14,16,17])==True",,issort_list,"[""assert issort_list([1,2,4,6,8,10,12,14,16,17])==True"", ""assert issort_list([1, 2, 4, 6, 8, 10, 12, 14, 20, 17])==False"", ""assert issort_list([1, 2, 4, 6, 8, 10,15,14,20])==False""]",,3,,"def issort_list(list1):
+    result = all(list1[i] <= list1[i+1] for i in range(len(list1)-1))
+    return result",38
+MBPP_575,mbpp,"Write a python function to find nth number in a sequence which is not a multiple of a given number.
+Your code should pass this test:
+assert count_no(2,3,1,10) == 5",,count_no,"[""assert count_no(2,3,1,10) == 5"", ""assert count_no(3,6,4,20) == 11"", ""assert count_no(5,10,4,20) == 16""]",,3,,"def count_no (A,N,L,R):
+    count = 0
+    for i in range (L,R + 1):
+        if (i % A != 0):
+            count += 1
+        if (count == N):
+            break
+    return (i) ",41
+MBPP_600,mbpp,"Write a python function to check whether the given number is even or not using bitwise operator.
+Your code should pass this test:
+assert is_Even(1) == False",,is_Even,"[""assert is_Even(1) == False"", ""assert is_Even(2) == True"", ""assert is_Even(3) == False""]",,3,,"def is_Even(n) :
+    if (n^1 == n+1) :
+        return True;
+    else :
+        return False; ",39
+MBPP_606,mbpp,"Write a function to convert degrees to radians.
+Your code should pass this test:
+assert radian_degree(90)==1.5707963267948966",,radian_degree,"[""assert radian_degree(90)==1.5707963267948966"", ""assert radian_degree(60)==1.0471975511965976"", ""assert radian_degree(120)==2.0943951023931953""]",,3,,"import math
+def radian_degree(degree):
+ radian = degree*(math.pi/180)
+ return radian",31
+MBPP_634,mbpp,"Write a python function to find the sum of fourth power of first n even natural numbers.
+Your code should pass this test:
+assert even_Power_Sum(2) == 272",,even_Power_Sum,"[""assert even_Power_Sum(2) == 272"", ""assert even_Power_Sum(3) == 1568"", ""assert even_Power_Sum(4) == 5664""]",,3,,"def even_Power_Sum(n):
+    sum = 0;
+    for i in range(1,n + 1):
+        j = 2*i;
+        sum = sum + (j*j*j*j);
+    return sum; ",38
+MBPP_650,mbpp,"Write a python function to check whether the given two arrays are equal or not.
+Your code should pass this test:
+assert are_Equal([1,2,3],[3,2,1],3,3) == True",,are_Equal,"[""assert are_Equal([1,2,3],[3,2,1],3,3) == True"", ""assert are_Equal([1,1,1],[2,2,2],3,3) == False"", ""assert are_Equal([8,9],[4,5,6],2,3) == False""]",,3,,"def are_Equal(arr1,arr2,n,m):
+    if (n != m):
+        return False
+    arr1.sort()
+    arr2.sort()
+    for i in range(0,n - 1):
+        if (arr1[i] != arr2[i]):
+            return False
+    return True",40
+MBPP_654,mbpp,"Write a function to find the perimeter of a rectangle.
+Your code should pass this test:
+assert rectangle_perimeter(10,20)==60",,rectangle_perimeter,"[""assert rectangle_perimeter(10,20)==60"", ""assert rectangle_perimeter(10,5)==30"", ""assert rectangle_perimeter(4,2)==12""]",,3,,"def rectangle_perimeter(l,b):
+  perimeter=2*(l+b)
+  return perimeter",31
+MBPP_655,mbpp,"Write a python function to find the sum of fifth power of n natural numbers.
+Your code should pass this test:
+assert fifth_Power_Sum(2) == 33",,fifth_Power_Sum,"[""assert fifth_Power_Sum(2) == 33"", ""assert fifth_Power_Sum(4) == 1300"", ""assert fifth_Power_Sum(3) == 276""]",,3,,"def fifth_Power_Sum(n) :
+    sm = 0
+    for i in range(1,n+1) :
+        sm = sm + (i*i*i*i*i)
+    return sm ",35
+MBPP_677,mbpp,"Write a function to check if the triangle is valid or not.
+Your code should pass this test:
+assert validity_triangle(60,50,90)==False",,validity_triangle,"[""assert validity_triangle(60,50,90)==False"", ""assert validity_triangle(45,75,60)==True"", ""assert validity_triangle(30,50,100)==True""]",,3,,"def validity_triangle(a,b,c):
+ total = a + b + c
+ if total == 180:
+    return True
+ else:
+    return False",33
+MBPP_680,mbpp,"Write a python function to check whether a sequence of numbers has an increasing trend or not.
+Your code should pass this test:
+assert increasing_trend([1,2,3,4]) == True",,increasing_trend,"[""assert increasing_trend([1,2,3,4]) == True"", ""assert increasing_trend([4,3,2,1]) == False"", ""assert increasing_trend([0,1,4,9]) == True""]",,3,,"def increasing_trend(nums):
+    if (sorted(nums)== nums):
+        return True
+    else:
+        return False",42
+MBPP_683,mbpp,"Write a python function to check whether the given number can be represented by sum of two squares or not.
+Your code should pass this test:
+assert sum_Square(25) == True",,sum_Square,"[""assert sum_Square(25) == True"", ""assert sum_Square(24) == False"", ""assert sum_Square(17) == True""]",,3,,"def sum_Square(n) :
+    i = 1
+    while i*i <= n :
+        j = 1
+        while (j*j <= n) :
+            if (i*i+j*j == n) :
+                return True
+            j = j+1
+        i = i+1
+    return False",42
+MBPP_702,mbpp,"Write a function to find the minimum number of elements that should be removed such that amax-amin<=k.
+Your code should pass this test:
+assert removals([1, 3, 4, 9, 10,11, 12, 17, 20], 9, 4) == 5",,removals,"[""assert removals([1, 3, 4, 9, 10,11, 12, 17, 20], 9, 4) == 5"", ""assert removals([1, 5, 6, 2, 8], 5, 2) == 3"", ""assert removals([1, 2, 3 ,4, 5, 6], 6, 3) == 2""]",,3,,"def find_ind(key, i, n,
+			k, arr):
+	ind = -1
+	start = i + 1
+	end = n - 1;
+	while (start < end):
+		mid = int(start +
+				(end - start) / 2)
+		if (arr[mid] - key <= k):
+			ind = mid
+			start = mid + 1
+		else:
+			end = mid
+	return ind
+def removals(arr, n, k):
+	ans = n - 1
+	arr.sort()
+	for i in range(0, n):
+		j = find_ind(arr[i], i,
+					n, k, arr)
+		if (j != -1):
+			ans = min(ans, n -
+						(j - i + 1))
+	return ans",49
+MBPP_721,mbpp,"Write a function to find a path with the maximum average over all existing paths for the given square matrix of size n*n.
+Your code should pass this test:
+assert maxAverageOfPath([[1, 2, 3], [6, 5, 4], [7, 3, 9]], 3) == 5.2",,maxAverageOfPath,"[""assert maxAverageOfPath([[1, 2, 3], [6, 5, 4], [7, 3, 9]], 3) == 5.2"", ""assert maxAverageOfPath([[2, 3, 4], [7, 6, 5], [8, 4, 10]], 3) == 6.2"", ""assert maxAverageOfPath([[3, 4, 5], [8, 7, 6], [9, 5, 11]], 3) == 7.2 ""]",,3,,"M = 100
+def maxAverageOfPath(cost, N):
+	dp = [[0 for i in range(N + 1)] for j in range(N + 1)]
+	dp[0][0] = cost[0][0]
+	for i in range(1, N):
+		dp[i][0] = dp[i - 1][0] + cost[i][0]
+	for j in range(1, N):
+		dp[0][j] = dp[0][j - 1] + cost[0][j]
+	for i in range(1, N):
+		for j in range(1, N):
+			dp[i][j] = max(dp[i - 1][j],
+						dp[i][j - 1]) + cost[i][j]
+	return dp[N - 1][N - 1] / (2 * N - 1)",56
+MBPP_722,mbpp,"Write a function to filter the height and width of students which are stored in a dictionary.
+Your code should pass this test:
+assert filter_data({'Cierra Vega': (6.2, 70), 'Alden Cantrell': (5.9, 65), 'Kierra Gentry': (6.0, 68), 'Pierre Cox': (5.8, 66)},6.0,70)=={'Cierra Vega': (6.2, 70)}",,filter_data,"[""assert filter_data({'Cierra Vega': (6.2, 70), 'Alden Cantrell': (5.9, 65), 'Kierra Gentry': (6.0, 68), 'Pierre Cox': (5.8, 66)},6.0,70)=={'Cierra Vega': (6.2, 70)}"", ""assert filter_data({'Cierra Vega': (6.2, 70), 'Alden Cantrell': (5.9, 65), 'Kierra Gentry': (6.0, 68), 'Pierre Cox': (5.8, 66)},5.9,67)=={'Cierra Vega': (6.2, 70),'Kierra Gentry': (6.0, 68)}"", ""assert filter_data({'Cierra Vega': (6.2, 70), 'Alden Cantrell': (5.9, 65), 'Kierra Gentry': (6.0, 68), 'Pierre Cox': (5.8, 66)},5.7,64)=={'Cierra Vega': (6.2, 70),'Alden Cantrell': (5.9, 65),'Kierra Gentry': (6.0, 68),'Pierre Cox': (5.8, 66)}""]",,3,,"def filter_data(students,h,w):
+    result = {k: s for k, s in students.items() if s[0] >=h and s[1] >=w}
+    return result    ",72
+MBPP_726,mbpp,"Write a function to multiply the adjacent elements of the given tuple.
+Your code should pass this test:
+assert multiply_elements((1, 5, 7, 8, 10)) == (5, 35, 56, 80)",,multiply_elements,"[""assert multiply_elements((1, 5, 7, 8, 10)) == (5, 35, 56, 80)"", ""assert multiply_elements((2, 4, 5, 6, 7)) == (8, 20, 30, 42)"", ""assert multiply_elements((12, 13, 14, 9, 15)) == (156, 182, 126, 135)""]",,3,,"def multiply_elements(test_tup):
+  res = tuple(i * j for i, j in zip(test_tup, test_tup[1:]))
+  return (res) ",41
+MBPP_732,mbpp,"Write a function to replace all occurrences of spaces, commas, or dots with a colon.
+Your code should pass this test:
+assert replace_specialchar('Python language, Programming language.')==('Python:language::Programming:language:')",,replace_specialchar,"[""assert replace_specialchar('Python language, Programming language.')==('Python:language::Programming:language:')"", ""assert replace_specialchar('a b c,d e f')==('a:b:c:d:e:f')"", ""assert replace_specialchar('ram reshma,ram rahim')==('ram:reshma:ram:rahim')""]",,3,,"import re
+def replace_specialchar(text):
+ return (re.sub(""[ ,.]"", "":"", text))
+",58
+MBPP_735,mbpp,"Write a python function to toggle bits of the number except the first and the last bit.
+Your code should pass this test:
+assert toggle_middle_bits(9) == 15",,toggle_middle_bits,"[""assert toggle_middle_bits(9) == 15"", ""assert toggle_middle_bits(10) == 12"", ""assert toggle_middle_bits(11) == 13""]",,3,,"def set_middle_bits(n):
+    n |= n >> 1;
+    n |= n >> 2;
+    n |= n >> 4;
+    n |= n >> 8;
+    n |= n >> 16;
+    return (n >> 1) ^ 1
+def toggle_middle_bits(n):
+    if (n == 1):
+        return 1
+    return n ^ set_middle_bits(n) ",39
+MBPP_739,mbpp,"Write a python function to find the index of smallest triangular number with n digits.
+Your code should pass this test:
+assert find_Index(2) == 4",,find_Index,"[""assert find_Index(2) == 4"", ""assert find_Index(3) == 14"", ""assert find_Index(4) == 45""]",,3,,"import math
+def find_Index(n):
+    x = math.sqrt(2 * math.pow(10,(n - 1)));
+    return round(x); ",36
+MBPP_744,mbpp,"Write a function to check if the given tuple has any none value or not.
+Your code should pass this test:
+assert check_none((10, 4, 5, 6, None)) == True",,check_none,"[""assert check_none((10, 4, 5, 6, None)) == True"", ""assert check_none((7, 8, 9, 11, 14)) == False"", ""assert check_none((1, 2, 3, 4, None)) == True""]",,3,,"def check_none(test_tup):
+  res = any(map(lambda ele: ele is None, test_tup))
+  return (res) ",38
+MBPP_752,mbpp,"Write a function to find the nth jacobsthal number.
+Your code should pass this test:
+assert jacobsthal_num(5) == 11",,jacobsthal_num,"[""assert jacobsthal_num(5) == 11"", ""assert jacobsthal_num(2) == 1"", ""assert jacobsthal_num(4) == 5""]",,3,,"def jacobsthal_num(n):
+	dp = [0] * (n + 1)
+	dp[0] = 0
+	dp[1] = 1
+	for i in range(2, n+1):
+		dp[i] = dp[i - 1] + 2 * dp[i - 2]
+	return dp[n]",29
+MBPP_753,mbpp,"Write a function to find minimum k records from tuple list.
+Your code should pass this test:
+assert min_k([('Manjeet', 10), ('Akshat', 4), ('Akash', 2), ('Nikhil', 8)], 2) == [('Akash', 2), ('Akshat', 4)]",,min_k,"[""assert min_k([('Manjeet', 10), ('Akshat', 4), ('Akash', 2), ('Nikhil', 8)], 2) == [('Akash', 2), ('Akshat', 4)]"", ""assert min_k([('Sanjeev', 11), ('Angat', 5), ('Akash', 3), ('Nepin', 9)], 3) == [('Akash', 3), ('Angat', 5), ('Nepin', 9)]"", ""assert min_k([('tanmay', 14), ('Amer', 11), ('Ayesha', 9), ('SKD', 16)], 1) == [('Ayesha', 9)]""]",,3,,"def min_k(test_list, K):
+  res = sorted(test_list, key = lambda x: x[1])[:K]
+  return (res) ",51
+MBPP_757,mbpp,"Write a function to count the pairs of reverse strings in the given string list.
+Your code should pass this test:
+assert count_reverse_pairs([""julia"", ""best"", ""tseb"", ""for"", ""ailuj""])== '2'",,count_reverse_pairs,"[""assert count_reverse_pairs([\""julia\"", \""best\"", \""tseb\"", \""for\"", \""ailuj\""])== '2'"", ""assert count_reverse_pairs([\""geeks\"", \""best\"", \""for\"", \""skeeg\""]) == '1'"", ""assert count_reverse_pairs([\""makes\"", \""best\"", \""sekam\"", \""for\"", \""rof\""]) == '2' ""]",,3,,"def count_reverse_pairs(test_list):
+  res = sum([1 for idx in range(0, len(test_list)) for idxn in range(idx, len(
+	test_list)) if test_list[idxn] == str(''.join(list(reversed(test_list[idx]))))])
+  return str(res)",47
+MBPP_786,mbpp,"Write a function to locate the right insertion point for a specified value in sorted order.
+Your code should pass this test:
+assert right_insertion([1,2,4,5],6)==4",,right_insertion,"[""assert right_insertion([1,2,4,5],6)==4"", ""assert right_insertion([1,2,4,5],3)==2"", ""assert right_insertion([1,2,4,5],7)==4""]",,3,,"import bisect
+def right_insertion(a, x):
+    i = bisect.bisect_right(a, x)
+    return i",41
+MBPP_807,mbpp,"Write a python function to find the first odd number in a given list of numbers.
+Your code should pass this test:
+assert first_odd([1,3,5]) == 1",,first_odd,"[""assert first_odd([1,3,5]) == 1"", ""assert first_odd([2,4,1,3]) == 1"", ""assert first_odd ([8,9,1]) == 9""]",,3,,"def first_odd(nums):
+  first_odd = next((el for el in nums if el%2!=0),-1)
+  return first_odd",36
+MBPP_831,mbpp,"Write a python function to count equal element pairs from the given array.
+Your code should pass this test:
+assert count_Pairs([1,1,1,1],4) == 6",,count_Pairs,"[""assert count_Pairs([1,1,1,1],4) == 6"", ""assert count_Pairs([1,5,1],3) == 1"", ""assert count_Pairs([3,2,1,7,8,9],6) == 0""]",,3,,"def count_Pairs(arr,n):
+    cnt = 0;
+    for i in range(n):
+        for j in range(i + 1,n):
+            if (arr[i] == arr[j]):
+                cnt += 1;
+    return cnt; ",36
+MBPP_832,mbpp,"Write a function to extract the maximum numeric value from a string by using regex.
+Your code should pass this test:
+assert extract_max('100klh564abc365bg') == 564",,extract_max,"[""assert extract_max('100klh564abc365bg') == 564"", ""assert extract_max('hello300how546mer231') == 546"", ""assert extract_max('its233beenalong343journey234') == 343""]",,3,,"import re
+def extract_max(input):
+	numbers = re.findall('\d+',input)
+	numbers = map(int,numbers)
+	return max(numbers)",41
+MBPP_833,mbpp,"Write a function to get dictionary keys as a list.
+Your code should pass this test:
+assert get_key({1:'python',2:'java'})==[1,2]",,get_key,"[""assert get_key({1:'python',2:'java'})==[1,2]"", ""assert get_key({10:'red',20:'blue',30:'black'})==[10,20,30]"", ""assert get_key({27:'language',39:'java',44:'little'})==[27,39,44]""]",,3,,"def get_key(dict):
+    list = []
+    for key in dict.keys():
+        list.append(key)
+    return list",32
+MBPP_836,mbpp,"Write a function to find length of the subarray having maximum sum.
+Your code should pass this test:
+assert max_sub_array_sum([-2, -3, 4, -1, -2, 1, 5, -3],8) == 5",,max_sub_array_sum,"[""assert max_sub_array_sum([-2, -3, 4, -1, -2, 1, 5, -3],8) == 5"", ""assert max_sub_array_sum([1, -2, 1, 1, -2, 1],6) == 2"", ""assert max_sub_array_sum([-1, -2, 3, 4, 5],5) == 3""]",,3,,"from sys import maxsize
+def max_sub_array_sum(a,size):
+	max_so_far = -maxsize - 1
+	max_ending_here = 0
+	start = 0
+	end = 0
+	s = 0
+	for i in range(0,size):
+		max_ending_here += a[i]
+		if max_so_far < max_ending_here:
+			max_so_far = max_ending_here
+			start = s
+			end = i
+		if max_ending_here < 0:
+			max_ending_here = 0
+			s = i+1
+	return (end - start + 1)",41
+MBPP_852,mbpp,"Write a python function to remove negative numbers from a list.
+Your code should pass this test:
+assert remove_negs([1,-2,3,-4]) == [1,3]",,remove_negs,"[""assert remove_negs([1,-2,3,-4]) == [1,3]"", ""assert remove_negs([1,2,3,-4]) == [1,2,3]"", ""assert remove_negs([4,5,-6,7,-8]) == [4,5,7]""]",,3,,"def remove_negs(num_list):
+    for item in num_list:
+        if item < 0:
+           num_list.remove(item)
+    return num_list",34
+MBPP_862,mbpp,"Write a function to find the occurrences of n most common words in a given text.
+Your code should pass this test:
+assert n_common_words(""python is a programming language"",1)==[('python', 1)]",,n_common_words,"[""assert n_common_words(\""python is a programming language\"",1)==[('python', 1)]"", ""assert n_common_words(\""python is a programming language\"",1)==[('python', 1)]"", ""assert n_common_words(\""python is a programming language\"",5)==[('python', 1),('is', 1), ('a', 1), ('programming', 1), ('language', 1)]""]",,3,,"from collections import Counter
+import re
+def n_common_words(text,n):
+  words = re.findall('\w+',text)
+  n_common_words= Counter(words).most_common(n)
+  return list(n_common_words)",48
+MBPP_865,mbpp,"Write a function to print n-times a list using map function.
+Your code should pass this test:
+assert ntimes_list([1, 2, 3, 4, 5, 6, 7],3)==[3, 6, 9, 12, 15, 18, 21]",,ntimes_list,"[""assert ntimes_list([1, 2, 3, 4, 5, 6, 7],3)==[3, 6, 9, 12, 15, 18, 21]"", ""assert ntimes_list([1, 2, 3, 4, 5, 6, 7],4)==[4, 8, 12, 16, 20, 24, 28]"", ""assert ntimes_list([1, 2, 3, 4, 5, 6, 7],10)==[10, 20, 30, 40, 50, 60, 70]""]",,3,,"def ntimes_list(nums,n):
+    result = map(lambda x:n*x, nums)
+    return list(result)",41
+MBPP_880,mbpp,"Write a python function to find number of solutions in quadratic equation.
+Your code should pass this test:
+assert Check_Solution(2,5,2) == ""2 solutions""",,Check_Solution,"[""assert Check_Solution(2,5,2) == \""2 solutions\"""", ""assert Check_Solution(1,1,1) == \""No solutions\"""", ""assert Check_Solution(1,2,1) == \""1 solution\""""]",,3,,"def Check_Solution(a,b,c) :
+    if ((b*b) - (4*a*c)) > 0 :
+        return (""2 solutions"")
+    elif ((b*b) - (4*a*c)) == 0 :
+        return (""1 solution"")
+    else :
+        return (""No solutions"") ",38
+MBPP_898,mbpp,"Write a function to extract specified number of elements from a given list, which follow each other continuously.
+Your code should pass this test:
+assert extract_elements([1, 1, 3, 4, 4, 5, 6, 7],2)==[1, 4]",,extract_elements,"[""assert extract_elements([1, 1, 3, 4, 4, 5, 6, 7],2)==[1, 4]"", ""assert extract_elements([0, 1, 2, 3, 4, 4, 4, 4, 5, 7],4)==[4]"", ""assert extract_elements([0,0,0,0,0],5)==[0]""]",,3,,"from itertools import groupby
+def extract_elements(numbers, n):
+    result = [i for i, j in groupby(numbers) if len(list(j)) == n]
+    return result",52
+MBPP_903,mbpp,"Write a python function to count the total unset bits from 1 to n.
+Your code should pass this test:
+assert count_Unset_Bits(2) == 1",,count_Unset_Bits,"[""assert count_Unset_Bits(2) == 1"", ""assert count_Unset_Bits(5) == 4"", ""assert count_Unset_Bits(14) == 17""]",,3,,"def count_Unset_Bits(n) :
+    cnt = 0;
+    for i in range(1,n + 1) :
+        temp = i;
+        while (temp) :
+            if (temp % 2 == 0) :
+                cnt += 1;
+            temp = temp // 2;
+    return cnt;  ",33
+MBPP_904,mbpp,"Write a function to return true if the given number is even else return false.
+Your code should pass this test:
+assert even_num(13.5)==False",,even_num,"[""assert even_num(13.5)==False"", ""assert even_num(0)==True"", ""assert even_num(-9)==False""]",,3,,"def even_num(x):
+  if x%2==0:
+     return True
+  else:
+    return False",35
+MBPP_934,mbpp,"Write a function to find the nth delannoy number.
+Your code should pass this test:
+assert dealnnoy_num(3, 4) == 129",,dealnnoy_num,"[""assert dealnnoy_num(3, 4) == 129"", ""assert dealnnoy_num(3, 3) == 63"", ""assert dealnnoy_num(4, 5) == 681""]",,3,,"def dealnnoy_num(n, m):
+	if (m == 0 or n == 0) :
+		return 1
+	return dealnnoy_num(m - 1, n) + dealnnoy_num(m - 1, n - 1) + dealnnoy_num(m, n - 1)",29
+MBPP_935,mbpp,"Write a function to calculate the sum of series 1Â²+2Â²+3Â²+â€¦.+nÂ².
+Your code should pass this test:
+assert series_sum(6)==91",,series_sum,"[""assert series_sum(6)==91"", ""assert series_sum(7)==140"", ""assert series_sum(12)==650""]",,3,,"def series_sum(number):
+ total = 0
+ total = (number * (number + 1) * (2 * number + 1)) / 6
+ return total",30
+MBPP_940,mbpp,"Write a function to sort the given array by using heap sort.
+Your code should pass this test:
+assert heap_sort([12, 2, 4, 5, 2, 3]) == [2, 2, 3, 4, 5, 12]",,heap_sort,"[""assert heap_sort([12, 2, 4, 5, 2, 3]) == [2, 2, 3, 4, 5, 12]"", ""assert heap_sort([32, 14, 5, 6, 7, 19]) == [5, 6, 7, 14, 19, 32]"", ""assert heap_sort([21, 15, 29, 78, 65]) == [15, 21, 29, 65, 78]""]",,3,,"def heap_sort(arr):
+    heapify(arr)
+    end = len(arr) - 1
+    while end > 0:
+        arr[end], arr[0] = arr[0], arr[end]
+        shift_down(arr, 0, end - 1)
+        end -= 1
+    return arr
+
+def heapify(arr):
+    start = len(arr) // 2
+    while start >= 0:
+        shift_down(arr, start, len(arr) - 1)
+        start -= 1
+def shift_down(arr, start, end):
+    root = start
+    while root * 2 + 1 <= end:
+        child = root * 2 + 1
+        if child + 1 <= end and arr[child] < arr[child + 1]:
+            child += 1
+        if child <= end and arr[root] < arr[child]:
+            arr[root], arr[child] = arr[child], arr[root]
+            root = child
+        else:
+            return
+",38
+MBPP_947,mbpp,"Write a python function to find the length of the shortest word.
+Your code should pass this test:
+assert len_log([""win"",""lose"",""great""]) == 3",,len_log,"[""assert len_log([\""win\"",\""lose\"",\""great\""]) == 3"", ""assert len_log([\""a\"",\""ab\"",\""abc\""]) == 1"", ""assert len_log([\""12\"",\""12\"",\""1234\""]) == 2""]",,3,,"def len_log(list1):
+    min=len(list1[0])
+    for i in list1:
+        if len(i)<min:
+            min=len(i)
+    return min",35
+MBPP_956,mbpp,"Write a function to split the given string at uppercase letters by using regex.
+Your code should pass this test:
+assert split_list(""LearnToBuildAnythingWithGoogle"") == ['Learn', 'To', 'Build', 'Anything', 'With', 'Google']",,split_list,"[""assert split_list(\""LearnToBuildAnythingWithGoogle\"") == ['Learn', 'To', 'Build', 'Anything', 'With', 'Google']"", ""assert split_list(\""ApmlifyingTheBlack+DeveloperCommunity\"") == ['Apmlifying', 'The', 'Black+', 'Developer', 'Community']"", ""assert split_list(\""UpdateInTheGoEcoSystem\"") == ['Update', 'In', 'The', 'Go', 'Eco', 'System']""]",,3,,"import re
+def split_list(text):
+  return (re.findall('[A-Z][^A-Z]*', text))",56
+MBPP_962,mbpp,"Write a python function to find the sum of all even natural numbers within the range l and r.
+Your code should pass this test:
+assert sum_Even(2,5) == 6",,sum_Even,"[""assert sum_Even(2,5) == 6"", ""assert sum_Even(3,8) == 18"", ""assert sum_Even(4,6) == 10""]",,3,,"def sum_Natural(n):
+    sum = (n * (n + 1))
+    return int(sum)
+def sum_Even(l,r):
+    return (sum_Natural(int(r / 2)) - sum_Natural(int((l - 1) / 2))) ",38
+MBPP_966,mbpp,"Write a function to remove an empty tuple from a list of tuples.
+Your code should pass this test:
+assert remove_empty([(), (), ('',), ('a', 'b'), ('a', 'b', 'c'), ('d')])==[('',), ('a', 'b'), ('a', 'b', 'c'), 'd']  ",,remove_empty,"[""assert remove_empty([(), (), ('',), ('a', 'b'), ('a', 'b', 'c'), ('d')])==[('',), ('a', 'b'), ('a', 'b', 'c'), 'd']  "", ""assert remove_empty([(), (), ('',), (\""python\""), (\""program\"")])==[('',), (\""python\""), (\""program\"")]  "", ""assert remove_empty([(), (), ('',), (\""java\"")])==[('',),(\""java\"") ]  ""]",,3,,"def remove_empty(tuple1): #L = [(), (), ('',), ('a', 'b'), ('a', 'b', 'c'), ('d')]
+   tuple1 = [t for t in tuple1 if t]
+   return tuple1",54
+MBPP_970,mbpp,"Write a function to find minimum of two numbers.
+Your code should pass this test:
+assert min_of_two(10,20)==10",,min_of_two,"[""assert min_of_two(10,20)==10"", ""assert min_of_two(19,15)==15"", ""assert min_of_two(-10,-20)==-20""]",,3,,"def min_of_two( x, y ):
+    if x < y:
+        return x
+    return y",28

@@ -1,0 +1,99 @@
+{
+  "window_start": "2026-09-01T00:00:00+00:00",
+  "window_end": "2026-10-01T00:00:00+00:00",
+  "api": "https://api.carbonintensity.org.uk",
+  "regions": {
+    "1": {
+      "name": "North Scotland",
+      "mean_gco2_kwh": 0.0,
+      "hours": 720,
+      "excluded": "mean=0.0, ~zero hours=100%"
+    },
+    "2": {
+      "name": "South Scotland",
+      "mean_gco2_kwh": 0.23819444444444443,
+      "hours": 720,
+      "excluded": "mean=0.2, ~zero hours=92%"
+    },
+    "3": {
+      "name": "North West England",
+      "mean_gco2_kwh": 19.787037037037035,
+      "hours": 720
+    },
+    "4": {
+      "name": "North East England",
+      "mean_gco2_kwh": 11.356944444444444,
+      "hours": 720
+    },
+    "5": {
+      "name": "Yorkshire",
+      "mean_gco2_kwh": 82.2611111111111,
+      "hours": 720
+    },
+    "6": {
+      "name": "North Wales & Merseyside",
+      "mean_gco2_kwh": 35.547916666666666,
+      "hours": 720
+    },
+    "7": {
+      "name": "South Wales",
+      "mean_gco2_kwh": 266.21319444444447,
+      "hours": 720
+    },
+    "8": {
+      "name": "West Midlands",
+      "mean_gco2_kwh": 78.78703703703704,
+      "hours": 720
+    },
+    "9": {
+      "name": "East Midlands",
+      "mean_gco2_kwh": 151.3053240740741,
+      "hours": 720
+    },
+    "10": {
+      "name": "East England",
+      "mean_gco2_kwh": 114.94814814814814,
+      "hours": 720
+    },
+    "11": {
+      "name": "South West England",
+      "mean_gco2_kwh": 251.69212962962965,
+      "hours": 720
+    },
+    "12": {
+      "name": "South England",
+      "mean_gco2_kwh": 153.59652777777777,
+      "hours": 720
+    },
+    "13": {
+      "name": "London",
+      "mean_gco2_kwh": 131.81296296296298,
+      "hours": 720
+    },
+    "14": {
+      "name": "South East England",
+      "mean_gco2_kwh": 147.4615740740741,
+      "hours": 720
+    }
+  },
+  "chosen": {
+    "low": {
+      "region_id": 4,
+      "region": "North East England",
+      "mean": 11.356944444444444,
+      "hours": 720
+    },
+    "medium": {
+      "region_id": 10,
+      "region": "East England",
+      "mean": 114.94814814814814,
+      "hours": 720
+    },
+    "high": {
+      "region_id": 7,
+      "region": "South Wales",
+      "mean": 266.21319444444447,
+      "hours": 720
+    }
+  }
+}

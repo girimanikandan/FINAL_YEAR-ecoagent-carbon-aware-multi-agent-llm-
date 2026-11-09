@@ -1,0 +1,22 @@
+# System definitions. Every ablation row is the B1 form of a component unless the flag is on.
+# topology:  fixed_d3 | htde | complexity | cascade
+# router:    fixed_L | cost_aware | caar | cascade
+systems:
+  b1:       {label: "B1 Carbon-oblivious multi-agent", topology: fixed_d3,   router: fixed_L,    caar_carbon: false, budget_aware: false, cbc: false}
+  b2:       {label: "B2 Cost-aware cascade",           topology: cascade,    router: cascade,    caar_carbon: false, budget_aware: false, cbc: false, max_agent_calls: 12}
+  b3:       {label: "B3 Single-request carbon-aware",  topology: fixed_d3,   router: caar,       caar_carbon: true,  budget_aware: false, cbc: false}
+  b4:       {label: "B4 Adaptive topology, carbon-oblivious", topology: complexity, router: cost_aware, caar_carbon: false, budget_aware: false, cbc: false}
+  ecoagent: {label: "EcoAgent (HTDE+CAAR+CBC)",        topology: htde,       router: caar,       caar_carbon: true,  budget_aware: true,  cbc: true}
+
+ablation:   # (HTDE, CAAR, CBC); "none" == B1 and is reused from the B1 runs
+  abl_full:      {label: "Full EcoAgent", topology: htde,     router: caar,    caar_carbon: true,  budget_aware: true,  cbc: true}
+  abl_no_cbc:    {label: "No CBC",        topology: htde,     router: caar,    caar_carbon: true,  budget_aware: false, cbc: false}
+  abl_no_htde:   {label: "No HTDE",       topology: fixed_d3, router: caar,    caar_carbon: true,  budget_aware: true,  cbc: true}
+  abl_no_caar:   {label: "No CAAR",       topology: htde,     router: fixed_L, caar_carbon: false, budget_aware: false, cbc: true}
+  abl_htde_only: {label: "HTDE only",     topology: htde,     router: fixed_L, caar_carbon: false, budget_aware: false, cbc: false}
+  abl_caar_only: {label: "CAAR only",     topology: fixed_d3, router: caar,    caar_carbon: true,  budget_aware: false, cbc: false}
+  abl_cbc_only:  {label: "CBC only",      topology: fixed_d3, router: fixed_L, caar_carbon: false, budget_aware: false, cbc: true}
+
+b4:
+  # Complexity bins come from terciles of the frozen task set (prompt tokens). Simple->D1, medium->D2, hard->D3.
+  depth_by_bin: {simple: 1, medium: 2, hard: 3}

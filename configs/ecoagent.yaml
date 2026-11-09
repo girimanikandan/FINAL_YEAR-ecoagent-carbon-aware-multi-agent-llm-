@@ -1,0 +1,62 @@
+experiment:
+  name: ecoagent_cg_v1
+  seed: 42
+  num_tasks: 200
+  num_seeds: 5
+  latency_slo_seconds: 30
+  carbon_budget_gco2eq: 5.0        # absolute per-task budget used for main runs (PDF example value)
+  quality_threshold: 0.8           # tau_q: pass-rate threshold (used by B2 cascade)
+  prompt_version: v1
+
+# Budget scope. PDF's "Main experiment procedure" initialises ledger+CBC PER TASK (session_tasks: 1), which is
+# also what its task_results example implies (5.0 - 1.84 = 3.16). Set session_tasks > 1 to make the budget span
+# several tasks (the paper's "session-level" claim). Budget = per-task budget x session_tasks.
+session:
+  session_tasks: 1
+
+htde:
+  theta: null                      # null => taken from results/processed/htde_calibration.json (pilot). Never hand-set.
+  theta_grid: [0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0]
+  epsilon: 0.01
+  max_agent_calls: 6
+  max_repair_rounds: 1
+  calibration_quality_retention_floor: 0.90   # theta selection rule: min emissions s.t. quality >= floor x always-D3 quality
+  use_latency_guard: false         # PDF lists remaining-latency as an input but gives no rule; off by default
+  n_complexity_bins: 3
+
+caar:
+  low_carbon_percentile: 33
+  high_carbon_percentile: 67
+  low_budget_force_small_threshold: 0.25
+  threshold_scope: per_profile     # per_profile | pooled (see README "Interpretation decisions")
+  role_tiers:                      # PDF default acceptable tiers (cheapest -> strongest)
+    planner:  [S, M]
+    coder:    [M, L]
+    reviewer: [S, M]
+    repair:   [M, L]
+  est_completion_tokens: {planner: 250, coder: 350, reviewer: 250, repair: 350}
+
+cbc:
+  type: rule_based
+  budget_levels: {high: 0.5, medium: 0.25, low: 0.10}
+  alpha_values: {high: 1.0, medium: 0.7, low: 0.4, critical: 0.2}
+  high_carbon_penalty: 0.2
+  alpha_floor: 0.05                # alpha must stay in (0,1]; 0.2 - 0.2 would be 0, so we floor it (documented choice)
+  # Direct actuation so that "CBC only" is not a no-op: tier ceiling when alpha is small, and no repair when budget is exhausted.
+  tier_ceiling: {m_at_or_below_alpha: 0.4, s_at_or_below_alpha: 0.2}
+
+accounting:
+  comm_overhead_fraction: 0.0      # main experiment: E_comm = 0 (PDF recommendation); sensitivity is computed in analysis
+  comm_sensitivity_fractions: [0.01, 0.05, 0.10]
+
+sandbox:
+  mode: subprocess                 # subprocess | docker
+  timeout_seconds: 10
+  memory_mb: 512
+  cpu_seconds: 10
+  max_output_bytes: 1000000
+  docker_image: "python:3.11-slim"
+
+llm:
+  max_call_retries: 1              # extra attempts after a failed API call; each attempt is logged as its own call
+  cache_enabled: true              # temperature 0 => identical prompt+model => identical output; latency is replayed from the original call

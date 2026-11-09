@@ -1,0 +1,74 @@
+{
+  "runs": 1,
+  "analysed_scale": "smoke",
+  "providers": [
+    "ollama"
+  ],
+  "carbon_sources": [
+    "uk_carbon_intensity_api_regional:East England"
+  ],
+  "provisional": false,
+  "carbon_thresholds_low_high": {
+    "medium": [
+      78.0,
+      138.5
+    ]
+  },
+  "models": {
+    "S": {
+      "provider": "ollama",
+      "endpoint": "http://localhost:11434",
+      "api_key_env": null,
+      "quantization": "ollama default (as pulled; record `ollama show <model>` output here)",
+      "context_window": 4096,
+      "temperature": 0.0,
+      "request_timeout_seconds": 600,
+      "cost_per_1k_input_usd": 0.0,
+      "cost_per_1k_output_usd": 0.0,
+      "name": "qwen2.5-coder:1.5b-instruct",
+      "params_b": 1.5,
+      "max_output_tokens": 1024
+    },
+    "M": {
+      "provider": "ollama",
+      "endpoint": "http://localhost:11434",
+      "api_key_env": null,
+      "quantization": "ollama default (as pulled; record `ollama show <model>` output here)",
+      "context_window": 4096,
+      "temperature": 0.0,
+      "request_timeout_seconds": 600,
+      "cost_per_1k_input_usd": 0.0,
+      "cost_per_1k_output_usd": 0.0,
+      "name": "qwen2.5-coder:3b-instruct",
+      "params_b": 3.0,
+      "max_output_tokens": 1536
+    },
+    "L": {
+      "provider": "ollama",
+      "endpoint": "http://localhost:11434",
+      "api_key_env": null,
+      "quantization": "ollama default (as pulled; record `ollama show <model>` output here)",
+      "context_window": 4096,
+      "temperature": 0.0,
+      "request_timeout_seconds": 600,
+      "cost_per_1k_input_usd": 0.0,
+      "cost_per_1k_output_usd": 0.0,
+      "name": "qwen2.5-coder:7b-instruct",
+      "params_b": 7.0,
+      "max_output_tokens": 2048
+    }
+  },
+  "energy_per_token_wh": {
+    "S": 0.0001,
+    "M": 0.0002,
+    "L": 0.00045
+  },
+  "energy_source": {
+    "S": "assumed_scaling_from_published_range",
+    "M": "assumed_scaling_from_published_range",
+    "L": "assumed_scaling_from_published_range"
+  },
+  "warnings": [
+    "Energy per token is an ASSUMED estimate (not CodeCarbon-measured) -> state this as a limitation."
+  ]
+}

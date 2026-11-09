@@ -1,0 +1,42 @@
+@'
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+
+# IDE and local tools
+.vscode/
+.idea/
+.claude-dev-helper/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Databases and caches
+*.sqlite
+*.sqlite3
+*.db
+results/cache/
+results/jobs/
+results/index.sqlite
+
+# Temporary experiment outputs
+results/raw/adhoc_*/
+
+# Build files
+build/
+dist/
+
+# Logs
+*.log
+'@ | Set-Content .gitignore

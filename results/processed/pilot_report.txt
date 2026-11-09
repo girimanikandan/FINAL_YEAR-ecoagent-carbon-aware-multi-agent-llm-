@@ -1,0 +1,20 @@
+﻿=== PILOT REPORT ===
+provider=ollama  mock=False  carbon_profile=medium (uk_carbon_intensity_api_regional:East England)
+models: S=qwen2.5-coder:1.5b-instruct, M=qwen2.5-coder:3b-instruct, L=qwen2.5-coder:7b-instruct
+energy Wh/token: {'S': 0.0001, 'M': 0.0002, 'L': 0.00045}  source: ['assumed_scaling_from_published_range']
+configured latency SLO: 30s
+
+depth | tasks | all-tests-pass | mean pass-rate | mean g/task | mean calls | latency p50 / p90 / max (s) | within SLO
+  D1  |  20   |    75%         |  0.843        | 0.0081      | 1.00       |   23.4 /   40.1 /   56.1        | 70%
+  D2  |  13   |    62%         |  0.781        | 0.0252      | 2.00       |   50.4 /   69.6 /  101.7        | 0%
+  3  | (no finished tasks yet)
+
+LLM calls by tier per depth (cache hits included): {"1": {"S": 0, "M": 11, "L": 9}, "2": {"S": 7, "M": 13, "L": 6}}
+
+Depth-1 coder quality by the tier CAAR picked (small n; indicative only):
+             n  pass_rate  all_pass
+coder_tier
+L            9      0.778     0.778
+M           11      0.896     0.727
+
+HTDE calibration file not found yet (pilot not finished).

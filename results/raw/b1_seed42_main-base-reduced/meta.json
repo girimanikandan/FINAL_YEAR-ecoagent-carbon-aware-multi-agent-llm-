@@ -1,0 +1,84 @@
+{
+  "run_id": "b1_seed42_main-base-reduced",
+  "system": "b1",
+  "seed": 42,
+  "experiment": "main",
+  "label": "base",
+  "scale": "reduced",
+  "profile": "medium",
+  "provider": "ollama",
+  "is_mock": false,
+  "phase": "main",
+  "n_tasks": 100,
+  "carbon_source": "uk_carbon_intensity_api_regional:East England",
+  "carbon_is_real": true,
+  "carbon_thresholds": [
+    78.0,
+    138.5
+  ],
+  "budget_per_task_gco2eq": null,
+  "config_hash": "0a88b6c9e6f7",
+  "models": {
+    "S": {
+      "provider": "ollama",
+      "endpoint": "http://localhost:11434",
+      "api_key_env": null,
+      "quantization": "ollama default (as pulled; record `ollama show <model>` output here)",
+      "context_window": 4096,
+      "temperature": 0.0,
+      "request_timeout_seconds": 600,
+      "cost_per_1k_input_usd": 0.0,
+      "cost_per_1k_output_usd": 0.0,
+      "name": "qwen2.5-coder:1.5b-instruct",
+      "params_b": 1.5,
+      "max_output_tokens": 1024
+    },
+    "M": {
+      "provider": "ollama",
+      "endpoint": "http://localhost:11434",
+      "api_key_env": null,
+      "quantization": "ollama default (as pulled; record `ollama show <model>` output here)",
+      "context_window": 4096,
+      "temperature": 0.0,
+      "request_timeout_seconds": 600,
+      "cost_per_1k_input_usd": 0.0,
+      "cost_per_1k_output_usd": 0.0,
+      "name": "qwen2.5-coder:3b-instruct",
+      "params_b": 3.0,
+      "max_output_tokens": 1536
+    },
+    "L": {
+      "provider": "ollama",
+      "endpoint": "http://localhost:11434",
+      "api_key_env": null,
+      "quantization": "ollama default (as pulled; record `ollama show <model>` output here)",
+      "context_window": 4096,
+      "temperature": 0.0,
+      "request_timeout_seconds": 600,
+      "cost_per_1k_input_usd": 0.0,
+      "cost_per_1k_output_usd": 0.0,
+      "name": "qwen2.5-coder:7b-instruct",
+      "params_b": 7.0,
+      "max_output_tokens": 2048
+    }
+  },
+  "energy_per_token_wh": {
+    "S": 0.0001,
+    "M": 0.0002,
+    "L": 0.00045
+  },
+  "energy_source": {
+    "S": "assumed_scaling_from_published_range",
+    "M": "assumed_scaling_from_published_range",
+    "L": "assumed_scaling_from_published_range"
+  },
+  "spec": {
+    "label": "B1 Carbon-oblivious multi-agent",
+    "topology": "fixed_d3",
+    "router": "fixed_L",
+    "caar_carbon": false,
+    "budget_aware": false,
+    "cbc": false
+  },
+  "started": "2026-11-08T12:52:12Z"
+}

@@ -1,0 +1,26 @@
+{
+  "humaneval": {
+    "loaded": 164,
+    "reference_passes_harness": 164,
+    "excluded": [],
+    "frozen": 100,
+    "dev": 10
+  },
+  "mbpp": {
+    "loaded": 974,
+    "reference_passes_harness": 972,
+    "excluded": [
+      {
+        "task_id": "MBPP_367",
+        "why": "Solution failed to load: NameError: name 'Node' is not defined"
+      },
+      {
+        "task_id": "MBPP_927",
+        "why": "Solution failed to load: NameError: name 'Node' is not defined"
+      }
+    ],
+    "frozen": 100,
+    "dev": 10
+  },
+  "freeze_seed": 20260101
+}

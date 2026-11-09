@@ -1,0 +1,32 @@
+matrix:
+  seeds: [42, 43, 44, 45, 46]
+  main:
+    systems: [b1, b2, b3, b4, ecoagent]
+    profile: medium
+  budget_sensitivity:
+    system: ecoagent
+    profile: medium
+    levels: {tight: 0.25, medium: 0.50, relaxed: 1.00}   # fraction of B1 mean per-task emissions (from the main B1 runs)
+  grid_sensitivity:
+    systems: [ecoagent, b3]
+    profiles: [low, medium, high]
+  ablation:
+    configs: [abl_full, abl_no_cbc, abl_no_htde, abl_no_caar, abl_htde_only, abl_caar_only, abl_cbc_only]
+    n_seeds: 3
+
+scales:                              # PDF: do not go below 100 tasks x 3 seeds for the main result
+  smoke:   {tasks_per_source: 3,   seeds: 1}
+  reduced: {tasks_per_source: 50,  seeds: 3}
+  full:    {tasks_per_source: 100, seeds: 5}
+
+data:
+  humaneval_csv: data/humaneval_tasks.csv
+  mbpp_csv: data/mbpp_tasks.csv
+  dev_csv: data/dev_tasks.csv
+  schedule_csv: data/task_carbon_schedule.csv
+  carbon: {low: data/carbon_intensity_low.csv, medium: data/carbon_intensity_medium.csv, high: data/carbon_intensity_high.csv}
+  freeze_seed: 20260101              # seed used ONCE to choose the 100+100 task ids (then frozen in the CSVs)
+  n_per_source: 100
+  n_dev_per_source: 10               # dev/pilot tasks, disjoint from the frozen 200
+
+paths: {raw: results/raw, processed: results/processed, figures: results/figures, cache: results/cache, paper: paper_artifacts}

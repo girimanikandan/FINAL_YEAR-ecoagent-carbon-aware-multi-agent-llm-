@@ -1,0 +1,41 @@
+# Checklist vs. "Prototype goal" PDF
+
+Legend: ✅ implemented **and** verified offline (pytest / harness validation / UI smoke test) · 🟡 implemented but **could not be run in the build
+environment** (needs your machine: Ollama, Docker, internet, CodeCarbon) · ⚠️ needs your input/decision · ⬜ not done (needs real runs)
+
+| PDF requirement | Status | Notes |
+|---|---|---|
+| **Scope**: code generation only; 5 components (Session Manager, HTDE, CAAR, Model Pool, CBC) | ✅ | `src/session_manager.py htde.py caar.py model_pool.py cbc.py` |
+| Python 3.11+, custom orchestrator, YAML config, Git | ✅ | LangGraph dropped (plain-Python orchestrator, full control of per-call logging) |
+| OpenAI-compatible client; Ollama local models | 🟡 | `/v1/chat/completions`, provider-reported token counts. Logic tested via mock; real Ollama untested here |
+| SQLite + JSONL tracking | ✅ | JSONL raw logs; `results/index.sqlite` run index; sqlite response cache |
+| CodeCarbon measured energy | 🟡 | `scripts/calibrate_energy.py` (idle-subtracted). Until run, energy/token is **assumed** and flagged in every output |
+| Exactly 3 frozen tiers + per-model metadata record | ⚠️ | Frozen in `configs/models.yaml` (laptop profile 1.5B/3B/7B; PDF reference profile 1.5B/7B/14B provided). Fill in real `quantization` / `context_window` from `ollama show` |
+| HumanEval + MBPP, 100 + 100 frozen task ids, never re-sampled | ✅ | `data/humaneval_tasks.csv`, `mbpp_tasks.csv`; seed 20260101; +20 disjoint dev tasks |
+| Hidden unit tests with objective pass rate (passed/total) | ✅ | Per-assert counting; harness validated: 164/164 HumanEval and 972/974 MBPP reference solutions pass (2 excluded, listed in `data/data_validation.json`); all 220 chosen tasks re-validated in pytest |
+| Depth 1/2/3 pipeline, ≤1 repair round, flow Planner→Coder→tests→Reviewer→Repair→tests | ✅ | tested: repair only after failing tests, ≤1 round |
+| Every LLM call logged incl. retries | ✅ | tested: task totals == sum of call records; B2 failed S-attempt is charged |
+| HTDE: ΔQ/ΔE > θ/max(α,ε), calibrated θ, inputs (prompt tokens, #tests, est. tokens, budget, carbon) | ✅ code · ⬜ real calibration | Task difficulty label: none exists in HumanEval/MBPP (null). Latency input: optional guard, off by default |
+| HTDE defaults τq 0.8, ε 0.01, max repair 1, max calls 6 | ✅ | θ **not** hard-coded: selected by the pilot |
+| CAAR two-stage router, role→tier map, <25% budget forces lowest, escalation after failure | ✅ | rules unit-tested. Latency/quality-threshold inputs have no rule in the spec → unused (documented) |
+| Carbon terciles derived from the trace, exact thresholds reported | ✅ | in each run's `meta.json` + `provenance.json` + Carbon page |
+| CBC rule-based α policy (1.0/0.7/0.4/0.2, −0.2 in high tercile) | ✅ | exact table unit-tested. α floored at 0.05; "current task quality estimate" state is not used (no rule in spec) |
+| Per-call emissions formula, E_comm = 0 + 1/5/10% sensitivity, token definitions | ✅ | `comm_overhead_sensitivity.csv` recomputed from raw logs |
+| Replayed carbon data, 3 profiles × 30 days hourly, deterministic task→hour schedule file | 🟡/⚠️ | Schedule ✅ tested. **Shipped CSVs are synthetic placeholders** (flagged, outputs stamped PROVISIONAL). Real data: `scripts/fetch_carbon_data.py` (untested: no network to the UK API here). UK regions aren't coal-heavy → import a fossil-heavy trace if needed |
+| Baselines B1–B4 | ✅ | B1 always-L; B2 cascade; B3 carbon-aware per call, no budget; B4 complexity-only, never reads carbon (tested) |
+| All 13 metrics from raw logs | ✅ | `analysis/aggregate_results.py` |
+| JSONL schemas (llm_calls / task_results) | ✅ | PDF keys all present (tested) plus provenance extras |
+| Main matrix, budget sensitivity (25/50/100% of B1), grid sensitivity (EcoAgent & B3 × 3 traces), 8-config ablation | ✅ code · ⬜ real runs | smoke-run end-to-end on the mock; "None" row reuses B1 |
+| Stats: mean/SD/95% CI/median/n; paired Wilcoxon (or t if normal); p; Cliff's δ & Cohen's d; Holm–Bonferroni | ✅ | `statistical_tests.csv` + bootstrap CI of the % change |
+| Repo structure | ✅ | additions: `config.py tasks.py scripts/ dashboard/ legacy/ data/dev_tasks.csv`; `evaluation/metrics.py` folded into `aggregate_results.py` |
+| Prompts as versioned text files (verbatim) | ✅ | `configs/prompts/v1/` |
+| Test-execution safety: fresh temp dir, timeout=fail, output cap, no secrets, no network, mem/CPU limits | ✅ temp dir, timeout, cap, env scrubbing · 🟡 limits/network | rlimits + socket block are POSIX best-effort (tested: socket call fails, API key invisible). Docker mode (`--network none`) written but untested here — use it on Windows |
+| No LLM judging of its own code | ✅ | tests only |
+| Pilot (20 tasks): prompts, extraction, tests, tokens, θ calibration, carbon logging | ✅ code · ⬜ real run | pilot data excluded from results (`phase=pilot`) |
+| Results files (main, CI, ablation, carbon, budget, tier, retry, stats, figures, raw) | ✅ | generated by `analyze`; every figure/table stamped PROVISIONAL when inputs are synthetic/mock |
+| Frontend: no decorative widgets; every control wired to real code | ✅ | 8 pages render (AppTest); Run Control launches the real CLI as a background job; Results reads only `results/processed` |
+
+## Not verified anywhere (do these first on your machine)
+1. `python -m src.main pilot --provider ollama` — first real LLM calls; check code extraction and the pilot log.
+2. `python scripts/fetch_carbon_data.py --start 2026-09-01` — real traces (then re-check `info`).
+3. Docker sandbox (if you switch `sandbox.mode`), CodeCarbon calibration, real latency/SLO behaviour (30 s may be too tight for local CPU inference — a config choice to discuss).
